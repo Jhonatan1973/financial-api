@@ -82,7 +82,7 @@ erDiagram
     Category ||--o{ Transaction : classifica
 
     User {
-        string id PK
+        uuid id PK
         string name
         string email UK
         string passwordHash
@@ -90,17 +90,39 @@ erDiagram
         datetime updatedAt
     }
     Account {
-        string name
-        AccountType type
+        uuid id PK
+        uuid userId FK
+        string name "único por usuário"
+        AccountType type "CHECKING | SAVINGS | WALLET"
+        decimal initialBalance "12,2"
+        datetime createdAt
+        datetime updatedAt
     }
     Category {
+        uuid id PK
         string name UK
+        TransactionType type "INCOME | EXPENSE"
+        datetime createdAt
+        datetime updatedAt
     }
     Transaction {
-        TransactionType type
+        uuid id PK
+        uuid userId FK
+        uuid accountId FK
+        uuid categoryId FK
+        string description
+        decimal amount "12,2"
+        TransactionType type "INCOME | EXPENSE"
+        date date
+        datetime createdAt
+        datetime updatedAt
     }
     RefreshToken {
-        string token UK
+        uuid id PK
+        uuid userId FK
+        string token UK "hash"
+        datetime expiresAt
+        datetime createdAt
     }
 ```
 
