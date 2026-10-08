@@ -1,7 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../../prisma/prisma.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
-import { Transaction } from '@prisma/client';
+import { Transaction, TransactionType } from '@prisma/client';
+
+export interface FindAllFilters {
+  page: number;
+  limit: number;
+  categoryId?: number;
+  type?: TransactionType;
+}
 
 @Injectable()
 export class TransactionsService {
@@ -63,17 +70,36 @@ export class TransactionsService {
   }
 
   /**
-   * Retrieves all transactions for the user.
+   * Retrieves all transactions for the user with pagination and filters.
    */
-  async findAllByUser(userId: number): Promise<Transaction[]> {
-    return this.prisma.transaction.findMany({
-      where: { userId },
-      orderBy: { date: 'desc' },
-      include: {
-        category: true,
-        account: true,
-      },
-    });
+  async findAllByUser(userId: number, filters: FindAllFilters) {
+    const { page, limit, categoryId, type } = filters;
+    const skip = (page - 1) * limit;
+
+    const where: any = { userId };
+    if (categoryId) where.categoryId = categoryId;
+    if (type) where.type = type;
+
+    const [total, data] = await Promise.all([
+      this.prisma.transaction.count({ where }),
+      this.prisma.transaction.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { date: 'desc' },
+        include: {
+          category: true,
+          account: true,
+        },
+      }),
+    ]);
+
+    return {
+      total,
+      page,
+      lastPage: Math.ceil(total / limit),
+      data,
+    };
   }
 
   /**

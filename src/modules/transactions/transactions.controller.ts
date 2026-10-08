@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Query, UseGuards, Request } from '@nestjs/common';
+import { Controller, Get, Post, Body, Query, UseGuards, Request, DefaultValuePipe, ParseIntPipe } from '@nestjs/common';
 import { TransactionsService } from './transactions.service';
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -20,10 +20,25 @@ export class TransactionsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'List all transactions for the authenticated user' })
-  findAll(@Request() req: any) {
+  @ApiOperation({ summary: 'List transactions with pagination and filters' })
+  @ApiQuery({ name: 'page', required: false, example: 1, type: Number })
+  @ApiQuery({ name: 'limit', required: false, example: 10, type: Number })
+  @ApiQuery({ name: 'categoryId', required: false, type: Number })
+  @ApiQuery({ name: 'type', required: false, enum: ['INCOME', 'EXPENSE'] })
+  findAll(
+    @Request() req: any,
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('categoryId') categoryId?: string,
+    @Query('type') type?: 'INCOME' | 'EXPENSE',
+  ) {
     const userId = req.user.sub;
-    return this.transactionsService.findAllByUser(userId);
+    return this.transactionsService.findAllByUser(userId, {
+      page,
+      limit,
+      categoryId: categoryId ? parseInt(categoryId, 10) : undefined,
+      type,
+    });
   }
 
   @Get('report')
