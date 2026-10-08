@@ -71,61 +71,6 @@ O projeto é evoluído de forma incremental, com novas funcionalidades, melhoria
 
 O schema está em [`prisma/schema.prisma`](prisma/schema.prisma) e possui **5 entidades**.
 
-### Diagrama
-
-```mermaid
-erDiagram
-    User ||--o{ Account : possui
-    User ||--o{ Transaction : realiza
-    User ||--o{ RefreshToken : autentica
-    Account ||--o{ Transaction : registra
-    Category ||--o{ Transaction : classifica
-
-    User {
-        uuid id PK
-        string name
-        string email UK
-        string passwordHash
-        datetime createdAt
-        datetime updatedAt
-    }
-    Account {
-        uuid id PK
-        uuid userId FK
-        string name "único por usuário"
-        AccountType type "CHECKING | SAVINGS | WALLET"
-        decimal initialBalance "12,2"
-        datetime createdAt
-        datetime updatedAt
-    }
-    Category {
-        uuid id PK
-        string name UK
-        TransactionType type "INCOME | EXPENSE"
-        datetime createdAt
-        datetime updatedAt
-    }
-    Transaction {
-        uuid id PK
-        uuid userId FK
-        uuid accountId FK
-        uuid categoryId FK
-        string description
-        decimal amount "12,2"
-        TransactionType type "INCOME | EXPENSE"
-        date date
-        datetime createdAt
-        datetime updatedAt
-    }
-    RefreshToken {
-        uuid id PK
-        uuid userId FK
-        string token UK "hash"
-        datetime expiresAt
-        datetime createdAt
-    }
-```
-
 ### Entidades
 
 | Entidade         | Descrição                                                        | Regras                                                       |
