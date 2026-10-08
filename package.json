@@ -4,9 +4,9 @@
   "description": "API REST para **gerenciamento financeiro pessoal**, desenvolvida com foco em organização, segurança, testes e boas práticas de desenvolvimento.",
   "author": "",
   "private": true,
-  "type": "module",
   "license": "UNLICENSED",
   "scripts": {
+    "postinstall": "prisma generate",
     "build": "nest build",
     "deploy": "nest deploy",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
