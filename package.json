@@ -4,6 +4,7 @@
   "description": "API REST para **gerenciamento financeiro pessoal**, desenvolvida com foco em organização, segurança, testes e boas práticas de desenvolvimento.",
   "author": "",
   "private": true,
+  "type": "module",
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
