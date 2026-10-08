@@ -1,178 +1,117 @@
-# 💰 Financial API
+<h1 align="center">
+  💳 Financial API - Personal Finance Manager
+</h1>
 
-API REST para **gerenciamento financeiro pessoal**, desenvolvida com foco em organização, segurança, testes e boas práticas de desenvolvimento.
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/Jhonatan1973/financial-api">
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/Jhonatan1973/financial-api">
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-brightgreen">
+</p>
 
-![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)
-![NestJS](https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql&logoColor=white)
-![Prisma](https://img.shields.io/badge/Prisma-6.19.3-2D3748?logo=prisma&logoColor=white)
+<p align="center">
+  <a href="#-about">About</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-features">Features</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-getting-started">Getting Started</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+  <a href="#-api-documentation">API Documentation</a>
+</p>
 
----
+<br>
 
-## 📑 Sumário
+## 🚀 About
 
-- [Sobre o projeto](#-sobre-o-projeto)
-- [Status](#-status)
-- [Tecnologias](#-tecnologias)
-- [Modelagem do banco de dados](#-modelagem-do-banco-de-dados)
-- [Como executar](#-como-executar)
-- [Roadmap](#-roadmap)
+**Financial API** is a complete backend service for personal finance management. Built with Clean Code practices and a modular architecture, it allows users to manage their income and expenses, organize transactions into categories, and generate monthly financial reports with category-based breakdowns.
 
----
-
-## 📌 Sobre o projeto
-
-O objetivo é construir uma API financeira completa, que permita aos usuários:
-
-- gerenciar suas **contas** (corrente, poupança, cartão de crédito e dinheiro);
-- registrar **transações** de entrada e saída, organizadas por **categorias**;
-- acompanhar o **saldo** em tempo real;
-- obter **relatórios** sobre sua movimentação financeira.
-
-O projeto é evoluído de forma incremental, com novas funcionalidades, melhorias de arquitetura, testes, segurança e infraestrutura a cada etapa.
+*(Insert Demo GIF or Screenshot here)*
 
 ---
 
-## 🚧 Status
+## ✨ Features
 
-> **Em desenvolvimento.** A camada de dados está modelada; a conexão com o banco, as migrations e os endpoints são os próximos passos.
-
-**Já implementado:**
-
-- ✅ Modelagem inicial do banco de dados
-- ✅ Prisma ORM e Prisma Client configurados
-- ✅ Models `User`, `Account`, `Category`, `Transaction` e `RefreshToken`
-- ✅ Enums para tipos de conta e de transação
-- ✅ Relacionamentos entre as entidades
-- ✅ Constraints de unicidade e índices para otimizar consultas
-- ✅ Configuração para PostgreSQL
+- **Authentication:** Secure user registration and login with JWT and bcrypt password hashing.
+- **Accounts:** Support for multiple account types (Checking, Savings, Credit Card, Cash) per user.
+- **Categories:** Organize transactions dynamically by user-defined categories.
+- **Transactions:** Record incomes and expenses with automatic account balance updates.
+- **Reports:** Get real-time monthly financial statements and expense breakdowns.
+- **Data Integrity:** ACID-compliant operations using Prisma transactions.
 
 ---
 
-## 🛠 Tecnologias
+## 💻 Technologies
 
-| Categoria        | Tecnologia                     |
-| ---------------- | ------------------------------ |
-| Runtime          | Node.js                        |
-| Linguagem        | TypeScript                     |
-| Framework        | NestJS                         |
-| Banco de dados   | PostgreSQL                     |
-| ORM              | Prisma `6.19.3`                |
-| Autenticação     | JWT (access + refresh token)   |
-| Testes           | Jest                           |
-| Containerização  | Docker                         |
-| CI/CD            | GitHub Actions                 |
+This project was developed with the following technologies:
+
+- **[Node.js](https://nodejs.org/en/)** & **[TypeScript](https://www.typescriptlang.org/)**
+- **[NestJS](https://nestjs.com/)** - Progressive Node.js framework
+- **[Prisma](https://www.prisma.io/)** - Next-generation ORM
+- **[PostgreSQL](https://www.postgresql.org/)** - Relational Database
+- **[Docker](https://www.docker.com/)** - Containerization
+- **[Swagger](https://swagger.io/)** - API Documentation
+- **[Jest](https://jestjs.io/)** - Unit and Integration Testing
 
 ---
 
-## 🗄 Modelagem do banco de dados
+## 🏁 Getting Started
 
-O schema está em [`prisma/schema.prisma`](prisma/schema.prisma) e possui **5 entidades**.
+Follow these instructions to get a copy of the project up and running on your local machine.
 
-### Entidades
+### Prerequisites
 
-| Entidade         | Descrição                                                        | Regras                                                       |
-| ---------------- | ---------------------------------------------------------------- | ------------------------------------------------------------ |
-| **User**         | Usuário da aplicação                                             | E-mail único                                                 |
-| **Account**      | Conta financeira do usuário                                      | Um usuário não pode ter duas contas com o mesmo nome         |
-| **Category**     | Categoria das transações (ex.: Alimentação, Transporte, Salário) | Nome único                                                   |
-| **Transaction**  | Movimentação financeira vinculada a usuário, conta e categoria   | Índices em `usuário + data` e `usuário + categoria`          |
-| **RefreshToken** | Refresh tokens usados na autenticação                            | Token único, vinculado ao usuário                            |
+- Node.js (v20+)
+- Docker & Docker Compose (for the PostgreSQL database)
+- Git
 
-### Enums
+### Installation
 
-**`AccountType`**
-
-| Valor         | Significado       |
-| ------------- | ----------------- |
-| `CHECKING`    | Conta corrente    |
-| `SAVINGS`     | Poupança          |
-| `CREDIT_CARD` | Cartão de crédito |
-| `CASH`        | Dinheiro          |
-
-**`TransactionType`**
-
-| Valor     | Significado |
-| --------- | ----------- |
-| `INCOME`  | Entrada     |
-| `EXPENSE` | Saída       |
-
-### Regras de exclusão
-
-| Ao excluir…   | Comportamento                                                               |
-| ------------- | --------------------------------------------------------------------------- |
-| **User**      | Contas, transações e refresh tokens são removidos em cascata                |
-| **Account**   | Bloqueado se houver transações vinculadas                                   |
-| **Category**  | Bloqueado se houver transações vinculadas                                   |
-
----
-
-## ▶️ Como executar
-
-### Pré-requisitos
-
-- [Node.js](https://nodejs.org/) (versão LTS)
-- [PostgreSQL](https://www.postgresql.org/)
-- npm
-
-### Passo a passo
-
+**1. Clone the repository:**
 ```bash
-# 1. Clone o repositório
-git clone <url-do-repositorio>
+git clone https://github.com/Jhonatan1973/financial-api.git
 cd financial-api
+```
 
-# 2. Instale as dependências
+**2. Setup environment variables:**
+```bash
+cp .env.example .env
+```
+Make sure to fill in the variables in your `.env` file. By default, the database URL points to the Docker container.
+
+**3. Start the database using Docker:**
+```bash
+docker-compose up -d
+```
+
+**4. Install dependencies:**
+```bash
 npm install
 ```
 
-**3. Configure as variáveis de ambiente** criando um arquivo `.env` na raiz:
-
-```env
-DATABASE_URL="postgresql://postgres:SUA_SENHA@localhost:5432/financial_db"
-```
-
-**4. Valide o schema e gere o Prisma Client:**
-
+**5. Run Prisma Migrations:**
 ```bash
-npx prisma validate
-npx prisma generate
+npx prisma migrate dev
 ```
 
-> ⚠️ O banco PostgreSQL e as migrations ainda estão em configuração. Esta seção será atualizada com os comandos de migration e de inicialização da API.
+**6. Start the server:**
+```bash
+# Development mode
+npm run start:dev
+```
+The server will start running at `http://localhost:3000`.
 
 ---
 
-## 🗺 Roadmap
+## 📚 API Documentation
 
-**Banco de dados**
-- [ ] Configurar PostgreSQL e criar o banco
-- [ ] Criar a primeira migration
-- [ ] Configurar a conexão da aplicação com o banco
+Once the server is running, you can access the full Swagger API documentation by navigating to:
 
-**Autenticação**
-- [ ] Implementar autenticação com JWT
-- [ ] Implementar cadastro e login
+👉 **[http://localhost:3000/api/docs](http://localhost:3000/api/docs)**
 
-**Funcionalidades**
-- [ ] CRUD de contas
-- [ ] CRUD de categorias
-- [ ] CRUD de transações
-- [ ] Cálculo e consulta de saldo
-- [ ] Relatórios financeiros
-- [ ] Paginação e filtros
-
-**Qualidade e infraestrutura**
-- [ ] Testes unitários
-- [ ] Testes de integração
-- [ ] Docker
-- [ ] CI com GitHub Actions
-- [ ] Documentação da API (Swagger)
+From there, you can test endpoints directly. To access protected routes, create a user, log in, and click the **Authorize** button in Swagger to paste your JWT token.
 
 ---
 
-## 👤 Autor
+## 📝 License
 
-Feito por **Jhon** — contribuições, sugestões e feedbacks são bem-vindos!
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+<br>
+<p align="center">Developed with 💙 by Jhonatan Silva</p>
