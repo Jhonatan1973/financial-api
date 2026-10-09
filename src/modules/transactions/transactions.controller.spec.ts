@@ -1,3 +1,4 @@
+import { TransactionsService } from './transactions.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { TransactionsController } from './transactions.controller';
 
@@ -6,6 +7,7 @@ describe('TransactionsController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [{ provide: TransactionsService, useValue: {} }],
       controllers: [TransactionsController],
     }).compile();
 

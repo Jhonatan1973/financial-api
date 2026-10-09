@@ -1,3 +1,4 @@
+import { CategoriesService } from './categories.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { CategoriesController } from './categories.controller';
 
@@ -6,6 +7,7 @@ describe('CategoriesController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [{ provide: CategoriesService, useValue: {} }],
       controllers: [CategoriesController],
     }).compile();
 
